@@ -53,7 +53,7 @@ while True:
         lastProcId = lastId # new messages processed. By now the last processed message is the last on the forum.
         print "Last message accepted: ", lastProcId
     
-    else: print "....... waiting messages ....... last processed MesId:", lastProcId
+    else: print "..... waiting messages ..... Last processed MesId:", lastProcId
     
     # get new list of usernames
     new_list = xu.UpdateListOfUserNames()

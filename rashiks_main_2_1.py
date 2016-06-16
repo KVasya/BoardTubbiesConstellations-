@@ -22,14 +22,19 @@ Then in the while cycle real-time part starts to operate -->
 8. M.modelUpdate(new_list) - updates model with new list of users
 '''
 import time
-# this module contains all functions and classes requied to achieve the purpose
+# this module contains all functions and classes to download posts
 import xml_update_2_1 as xu
+
+import model    # contains class 'Model' storing data from posts and updating model with it
 
 # download and processing the last 1000 messages, updating Model with them
 lastProcId, Model_Init_List = xu.BadInit() # get last _processed_ message index
 
-# KVasya!! UNCOMMENT and check this code that initialiaze your model
-#M.modelUpdate(Model_Init_List)
+# model is initialized
+M = model.Model()
+
+# first bunch of users fed to model
+M.modelUpdate(Model_Init_List)
 
 # real-time Model update
 while True:
@@ -52,10 +57,10 @@ while True:
     
     # get new list of usernames
     new_list = xu.UpdateListOfUserNames()
-    print "Updating Model with:", new_list, '\n'
-    
-    # UNCOMMENT to Updating Model with new_list
-    #M.modelUpdate(new_list)
+
+    if new_list:
+        print "Updating Model with:", new_list, '\n'
+        M.modelUpdate(new_list)
     
     # saving new_list to a file
     #xu.DebugSaveToFile(new_list)

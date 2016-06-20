@@ -6,6 +6,7 @@ download xml, extracting data, updating list of usernames
 '''
 import urllib
 import datetime
+import time
 from lxml import etree
 
 # import global data structures
@@ -211,6 +212,7 @@ def BadInit(NumOfMess = 10000):
     last_mes_id = GetLastMessageId()
     # download NumOfMess last messages posted on forum from xmlfp board service    
 	for k in range(NumOfMess/1000) : # treating 1000 messages in a turn
+		time.sleep(3)
 		xmls_str = DownloadNewXMLs(last_mes_id + 1 - NumOfMess + 1000*k, last_mes_id - NumOfMess + 1000*(k+1))
 		# extracting and process the data from downloaded XMLs
 		XMLstrProcessing(xmls_str)

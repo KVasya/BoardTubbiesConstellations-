@@ -27,7 +27,8 @@ import xml_update_2_1 as xu
 
 import model    # contains class 'Model' storing data from posts and updating model with it
 
-# download and processing the last 1000 messages, updating Model with them
+# download and processing the last NumOfMess=10000 messages, updating Model with them
+# wait for about 40 seconds to BadInit is completed
 lastProcId, Model_Init_List = xu.BadInit() # get last _processed_ message index
 
 # model is initialized

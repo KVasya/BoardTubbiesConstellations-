@@ -206,13 +206,14 @@ def DebugSaveToFile(inp):
 
 # temporal xml-database upload on server start
 # do exact thing that whole service do but using 1000 last forum messages
-def BadInit():
+def BadInit(NumOfMess = 10000):
     # get last message index
     last_mes_id = GetLastMessageId()
-    # download 1000 last messages posted on forum from xmlfp board service
-    xmls_str = DownloadNewXMLs(last_mes_id-999, last_mes_id)
-    # extracting and process the data from downloaded XMLs
-    XMLstrProcessing(xmls_str)
+    # download NumOfMess last messages posted on forum from xmlfp board service    
+	for k in range(NumOfMess/1000) : # treating 1000 messages in a turn
+		xmls_str = DownloadNewXMLs(last_mes_id + 1 - NumOfMess + 1000*k, last_mes_id - NumOfMess + 1000*(k+1))
+		# extracting and process the data from downloaded XMLs
+		XMLstrProcessing(xmls_str)
     
     # initialize list of LOUN
     lst_LOUN = []

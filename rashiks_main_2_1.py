@@ -26,6 +26,8 @@ import time
 import xml_update_2_1 as xu
 
 import model    # contains class 'Model' storing data from posts and updating model with it
+from pca_visualize import pca_plot, getMtxFromUserNames
+
 
 # download and processing the last NumOfMess=10000 messages, updating Model with them
 # wait for about 40 seconds to BadInit is completed
@@ -34,8 +36,12 @@ lastProcId, Model_Init_List = xu.BadInit() # get last _processed_ message index
 # model is initialized
 M = model.Model()
 
+
 # first bunch of users fed to model
 M.modelUpdate(Model_Init_List)
+
+
+
 
 # real-time Model update
 while True:
@@ -47,7 +53,7 @@ while True:
         lastId = xu.GetLastMessageId() # get the last message index available on the forum (not processed yet)
         
         # download new xmls appeared in the wait-time and convert it to a string
-        new_xmlstr = xu.DownloadNewXMLs(lastProcId+1,lastId)
+        new_xmlstr = xu.DownloadNewXMLs(lastProcId+1, lastId)
         
         # gets message data from xml_string and process it
         xu.XMLstrProcessing(new_xmlstr)
@@ -59,9 +65,17 @@ while True:
     # get new list of usernames
     new_list = xu.UpdateListOfUserNames()
 
+
+    # print 'Post closest to the new one is', new_list, ':\n', M.findNNPost(new_list, Model_Init_List)
+
     if new_list:
         print "Updating Model with:", new_list, '\n'
-        M.modelUpdate(new_list)
-    
+        M.modelUpdate([new_list])
+        NN_list = M.findNNPost(new_list, Model_Init_List)
+        ListOfUserNames = new_list + NN_list
+        pca_plot(getMtxFromUserNames(M.Umtx, M.Vmtx, M.Users_dict, ListOfUserNames), ListOfUserNames=ListOfUserNames,
+                 SublistOfUserNames=NN_list)
+        print 'Post closest to the new one is :\n',  NN_list
+        Model_Init_List.extend([new_list])
     # saving new_list to a file
     #xu.DebugSaveToFile(new_list)

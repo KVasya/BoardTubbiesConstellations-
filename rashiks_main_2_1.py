@@ -29,9 +29,10 @@ import model    # contains class 'Model' storing data from posts and updating mo
 from pca_visualize import pca_plot, getMtxFromUserNames
 
 
-# download and processing the last NumOfMess=10000 messages, updating Model with them
-# wait for about 40 seconds to BadInit is completed
-lastProcId, Model_Init_List = xu.BadInit() # get last _processed_ message index
+# download and processing the last NumOfMess (default = 10000) messages, updating Model with them
+lastProcId, Model_Init_List = xu.BadInit(NumOfMess=10000) # get last _processed_ message index
+
+# it takes for about 40 seconds to BadInit is completed
 
 # model is initialized
 M = model.Model()

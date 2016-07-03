@@ -9,7 +9,7 @@ url = "http://127.0.0.1:5000/upload"
 
 ''' Testing part '''
 # from glob import glob
-
+#zhopy ebal
 # global_path = 'D:/BOARD_PROJECT/test_images/'
 # fpostfix = '.bmp'
 

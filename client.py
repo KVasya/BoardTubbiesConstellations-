@@ -3,9 +3,13 @@
 import requests
 from time import sleep
 
+############### Params
+WAIT_TIME = 100
+
+##########################################################
 
 # url to our upload service, that is @app.route('/upload', ...)
-url = "http://127.0.0.1:5000/"
+url = "http://vasya.pythonanywhere.com/"
 
 ''' Testing part '''
 # from glob import glob
@@ -21,7 +25,7 @@ url = "http://127.0.0.1:5000/"
     # sleep(10)
 ''' Testing part ENDs'''
 
-img_to_sent = 'D:/BOARD_PROJECT/test_images/13.jpg' # write your own path + filename
+img_to_sent = './PostImage.jpg' # write your own path + filename
 
 while True:
     # opens img_to_sent file
@@ -32,6 +36,6 @@ while True:
 
         r = requests.post(url, files=file)
         
-    # waits 10 sec. before sending again.
-    sleep(10) # One SHOULD have a condition when it's to send POST request but now it's just wait 10s. 
+    # waits for WAIT_TIME sec. before sending again.
+    sleep(WAIT_TIME) # One SHOULD have a condition when it's to send POST request but now it's just wait 10s.
 

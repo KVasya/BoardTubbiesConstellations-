@@ -23,7 +23,7 @@ Then in the while cycle real-time part starts to operate -->
 '''
 import time
 # this module contains all functions and classes to download posts
-import xml_update_2_1 as xu
+import xml_utility as xu
 
 import model    # contains class 'Model' storing data from posts and updating model with it
 from pca_visualize import pca_plot, getMtxFromUserNames
@@ -121,3 +121,4 @@ while True:
         Model_Init_List.extend([new_list])
     # saving new_list to a file
     #xu.DebugSaveToFile(new_list)
+

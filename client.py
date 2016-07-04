@@ -27,11 +27,9 @@ while True:
     # opens img_to_sent file
     with open(img_to_sent, 'rb') as f :
         # constructs a dict from data (img_to_sent)
-        print '--- in with!! ---'
         file = {'file': f}
         # sends the image to the server via post request
         r = requests.post(url, files=file)
-    print "--- out of with! ---"
     
     
     # waits 10 sec. before sending again.

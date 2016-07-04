@@ -5,7 +5,7 @@ from flask import Flask, request, redirect, url_for, send_from_directory, render
 from werkzeug import secure_filename
 from shutil import copyfile
 
-path_to_flask_workshop = 'D:/BOARD_PROJECT/BoardTubbiesConstellations-web/'
+path_to_flask_workshop = '/home/Vasya/mysite/'
 
 UPLOAD_FOLDER = path_to_flask_workshop + 'uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'bmp'])

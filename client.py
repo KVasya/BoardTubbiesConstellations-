@@ -35,10 +35,18 @@ while True:
     with open(img_to_sent, 'rb') as img, open(text_to_sent, 'rb') as txt:
         # constructs a dict from data (img_to_sent)
         files = {'pic': img, 'text': txt}
-        # sends the image to the server via post request
-
-        r = requests.post(url, files=files)
         
+        # sends the image to the server via post request
+        while True:
+            try:
+                r = requests.post(url, files=files)
+                break
+            except:
+                pass
+                
+            print "Connection error. Waitting %d sec. before trying again." % (WAIT_TIME)
+            sleep(WAIT_TIME)
+                
     # waits for WAIT_TIME sec. before sending again.
     sleep(WAIT_TIME) # One SHOULD have a condition when it's to send POST request but now it's just wait 10s.
 

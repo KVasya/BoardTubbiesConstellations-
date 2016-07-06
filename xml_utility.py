@@ -40,21 +40,27 @@ def GetMaxIndexOfDownloadedXML(xml_DataBase_path):
         if len(ress) > 0 :
             thousand_idxs.append(int(ress[0]))
             #print ress
-    return max(thousand_idxs)
+    return max(thousand_idxs) * 1000
 
 # for future: do this AwesomeInitOfDatabase() function.
 # need to init on starting server
-def xmlDatabaseUpdate():
+def xmlDatabaseUpdate(xmlDBpath = xml_DataBase_path):
     # get the maximum index of XML files in our offline xml-database
-    maxOfflineXMLidx = GetMaxIndexOfDownloadedXML(xml_DataBase_path)
+    maxOfflineXMLidx = GetMaxIndexOfDownloadedXML(xmlDBpath) / 1000
     # get the last index of XML file in online xml-database board service
     lastOnlineXMLidx = GetLastMessageId() / 1000
+    
+    # implementation of a cycle to overcome the thousand-problem
     if lastOnlineXMLidx > maxOfflineXMLidx :
         for idx in range(maxOfflineXMLidx,lastOnlineXMLidx) :
+            
             # download new xml-thousand-files 
             xmlstr = DownloadNewXMLs(idx * 1000 + 1, (idx+1) * 1000)
-            # right xmlstr to file. Get this from getting_xmls.py
-    
+            
+            # write xmlstr to file.
+            xml_fname = xmlDBpath + 'xmlfp.jsp' + str(idx+1) + '.xml'
+            with open(xml_fname, 'w') as fx :
+                fx.write(xmlstr)
     
     return True
 

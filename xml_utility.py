@@ -6,7 +6,7 @@ download xml, extracting data, updating list of usernames
 '''
 import urllib
 import datetime
-import time
+from time import sleep
 from lxml import etree
 
 # import global data structures
@@ -68,8 +68,15 @@ def xmlDatabaseUpdate(xmlDBpath = xml_DataBase_path):
 # Attention! The last message on the forum is NOT always the last message available in xml-database. Especially on night..
 def GetLastMessageId():
     url_request = url_search_pref + 'xmlfp/xmlfp.jsp?xmlfp=lastMessageNumber&site=0'
-
-    lastnum_xmlstr = urllib.urlopen(url_request).read() # add exception for url non-availability
+    
+    while True:
+        try:
+            lastnum_xmlstr = urllib.urlopen(url_request).read()
+            break
+        except:
+            pass
+        sleep(100)
+    
     xmltree = etree.fromstring(lastnum_xmlstr, parser=used_parser)
 
     lastId = int(xmltree.text)
@@ -90,7 +97,14 @@ def CheckForNewMessage(old_Id):
 def DownloadNewXMLs(firstId,lastId):
     url_prefix = url_search_pref + 'xmlfp/xmlfp.jsp?xmlfp=messages&site=0'
     url_request = url_prefix + '&from=' + str(firstId) + '&to=' + str(lastId) # no more than 1000 messages at once
-    xmlstr = urllib.urlopen(url_request).read() # add exception for url non-availability
+    while True:
+        try:
+            xmlstr = urllib.urlopen(url_request).read()
+            break
+        except:
+            pass
+        sleep(100)        
+    
     return(xmlstr)
 
 # define a class for parsing xml and extracting message data
@@ -218,7 +232,7 @@ def BadInit(NumOfMess = 10000):
     last_mes_id = GetLastMessageId()
     # download NumOfMess last messages posted on forum from xmlfp board service    
     for k in range(NumOfMess/1000) : # treating 1000 messages in a turn
-	    time.sleep(3)
+	    sleep(3)
 	    xmls_str = DownloadNewXMLs(last_mes_id - NumOfMess + 1000*k + 1, last_mes_id - NumOfMess + 1000*(k+1))
 	    # extracting and process the data from downloaded XMLs
 	    XMLstrProcessing(xmls_str)

@@ -27,7 +27,7 @@ url = "http://vasya.pythonanywhere.com/"
 
 
 img_to_sent = './PostImage.jpg' # write your own path + filename
-text_to_sent = './test.txt' # write your own path + filename
+text_to_sent = './sub_permanent.txt' # write your own path + filename
 
 
 while True:

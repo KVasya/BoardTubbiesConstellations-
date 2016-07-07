@@ -27,6 +27,7 @@ import xml_utility as xu
 
 import model    # contains class 'Model' storing data from posts and updating model with it
 from pca_visualize import pca_plot, getMtxFromUserNames
+from plot import combine2Images
 import pickle
 
 
@@ -137,6 +138,7 @@ while True:
                  ImageFName='PostImage_new_list.jpg', Connections= new_list_Pairs
                  )
 
+        combine2Images('PostImage_NN_list.jpg', 'PostImage_new_list.jpg')
 
         print 'Scores of posts: ', M.Post2PostSimilarities(Model_Init_List, new_list)
         Model_Init_List.extend([new_list])

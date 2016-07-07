@@ -6,7 +6,7 @@ download xml, extracting data, updating list of usernames
 '''
 import urllib
 import datetime
-import time
+from time import sleep
 from lxml import etree
 
 # import global data structures
@@ -40,21 +40,27 @@ def GetMaxIndexOfDownloadedXML(xml_DataBase_path):
         if len(ress) > 0 :
             thousand_idxs.append(int(ress[0]))
             #print ress
-    return max(thousand_idxs)
+    return max(thousand_idxs) * 1000
 
 # for future: do this AwesomeInitOfDatabase() function.
 # need to init on starting server
-def xmlDatabaseUpdate():
+def xmlDatabaseUpdate(xmlDBpath = xml_DataBase_path):
     # get the maximum index of XML files in our offline xml-database
-    maxOfflineXMLidx = GetMaxIndexOfDownloadedXML(xml_DataBase_path)
+    maxOfflineXMLidx = GetMaxIndexOfDownloadedXML(xmlDBpath) / 1000
     # get the last index of XML file in online xml-database board service
     lastOnlineXMLidx = GetLastMessageId() / 1000
+    
+    # implementation of a cycle to overcome the thousand-problem
     if lastOnlineXMLidx > maxOfflineXMLidx :
         for idx in range(maxOfflineXMLidx,lastOnlineXMLidx) :
+            
             # download new xml-thousand-files 
             xmlstr = DownloadNewXMLs(idx * 1000 + 1, (idx+1) * 1000)
-            # right xmlstr to file. Get this from getting_xmls.py
-    
+            
+            # write xmlstr to file.
+            xml_fname = xmlDBpath + 'xmlfp.jsp' + str(idx+1) + '.xml'
+            with open(xml_fname, 'w') as fx :
+                fx.write(xmlstr)
     
     return True
 
@@ -62,8 +68,15 @@ def xmlDatabaseUpdate():
 # Attention! The last message on the forum is NOT always the last message available in xml-database. Especially on night..
 def GetLastMessageId():
     url_request = url_search_pref + 'xmlfp/xmlfp.jsp?xmlfp=lastMessageNumber&site=0'
-
-    lastnum_xmlstr = urllib.urlopen(url_request).read() # add exception for url non-availability
+    
+    while True:
+        try:
+            lastnum_xmlstr = urllib.urlopen(url_request).read()
+            break
+        except:
+            pass
+        sleep(100)
+    
     xmltree = etree.fromstring(lastnum_xmlstr, parser=used_parser)
 
     lastId = int(xmltree.text)
@@ -84,7 +97,14 @@ def CheckForNewMessage(old_Id):
 def DownloadNewXMLs(firstId,lastId):
     url_prefix = url_search_pref + 'xmlfp/xmlfp.jsp?xmlfp=messages&site=0'
     url_request = url_prefix + '&from=' + str(firstId) + '&to=' + str(lastId) # no more than 1000 messages at once
-    xmlstr = urllib.urlopen(url_request).read() # add exception for url non-availability
+    while True:
+        try:
+            xmlstr = urllib.urlopen(url_request).read()
+            break
+        except:
+            pass
+        sleep(100)        
+    
     return(xmlstr)
 
 # define a class for parsing xml and extracting message data
@@ -212,7 +232,7 @@ def BadInit(NumOfMess = 10000):
     last_mes_id = GetLastMessageId()
     # download NumOfMess last messages posted on forum from xmlfp board service    
     for k in range(NumOfMess/1000) : # treating 1000 messages in a turn
-	    time.sleep(3)
+	    sleep(3)
 	    xmls_str = DownloadNewXMLs(last_mes_id - NumOfMess + 1000*k + 1, last_mes_id - NumOfMess + 1000*(k+1))
 	    # extracting and process the data from downloaded XMLs
 	    XMLstrProcessing(xmls_str)

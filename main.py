@@ -32,15 +32,11 @@ import pickle
 
 # download and processing the last NumOfMess=10000 messages, updating Model with them
 # wait for about 40 seconds to BadInit is completed
-lastProcId, Model_Init_List = xu.BadInit(NumOfMess=10000) # get last _processed_ message index
+lastProcId, Model_Init_List = xu.BadInit(NumOfMess=1000) # get last _processed_ message index
 
 # model is initialized
 M = model.Model()
 
-# #DebugPart, to be removed!!!!! BEEGIN
-#
-# Model_Init_List = Model_Init_List[:3]
-# #DeburPart, to be remoded!!!!!!END
 
 
 # first bunch of users fed to model
@@ -99,24 +95,49 @@ while True:
 
     # print 'Post closest to the new one is', new_list, ':\n', M.findNNPost(new_list, Model_Init_List)
 
+    # ###############  DEBUG PART  ################### BEGIN
+    # new_list = Model_Init_List[0]
+    # ###############  DEBUG PART  ################### END
+
+
+
+
     if new_list:
         print "Updating Model with:", new_list, '\n'
         M.modelUpdate([new_list])
+        NN_list = M.findNNPost(new_list, Model_Init_List)
+        print 'Post closest to the new one is :\n', NN_list
+        ListOfUserNames = new_list + NN_list
+        (NN_list_Pairs, new_list_Pairs) = M.PostsIntersection(NN_list, new_list)   # user pairs  which take part in
+                                                                                   # depicted posts intersection
 
+        NN_list_Unique  = list(set([User for UserPair in NN_list_Pairs  for User in UserPair]))     # lists of unique
+        new_list_Unique = list(set([User for UserPair in new_list_Pairs for User in UserPair]))     # users who comprised
+                                                                                                    # intersection
+                                                                                                    # btwn posts
         # ################ DEBUG PART ############################## BEGIN
-        # pickle.dump(M, open('./testFles/M.p', 'w'))
-        # pickle.dump(new_list, open('./testFles/new_list.p', 'w'))
-        # pickle.dump(Model_Init_List, open('./testFles/Model_Init_List.p', 'w'))
+        # pickle.dump(M, open('./testFiles/M.p', 'w'))
+        # pickle.dump(new_list, open('./testFiles/NNPairsUniqueUsers.p', 'w'))
+        # pickle.dump(Model_Init_List, open('./testFiles/ListPairsUniqueUsers.p', 'w'))
+        # #pickle.dump(NN_list, open('./testFiles/NN_list.p', 'w'))
+        # #pickle.dump(ListOfDistinguishedUsers, open('./testFiles/ListOfDistinguishedUsers.p', 'w'))
         # ################ DEBUG PART ################################ END
 
-        NN_list = M.findNNPost(new_list, Model_Init_List)
-        ListOfUserNames = new_list + NN_list
-        ListOfDistinguishedUsers = M.PostsIntersection(NN_list, new_list)   # users which take part in depicted posts
-                                                                            # intersection
-        pca_plot(getMtxFromUserNames(M.Umtx, M.Vmtx, M.Users_dict, ListOfUserNames), ListOfUserNames=ListOfUserNames,
-                 SublistOfUserNames=NN_list, TurnNondistinguishedUsersOff = True,
-                 ListOfDistinguishedUsers = ListOfDistinguishedUsers)
-        print 'Post closest to the new one is :\n',  NN_list
+
+        ListOfUserNames = NN_list_Unique + new_list_Unique
+
+        pca_plot(getMtxFromUserNames(M.Umtx, M.Vmtx, M.Users_dict, ListOfUserNames),
+                 ListOfUserNames =  NN_list_Unique,
+                 SublistOfUserNames = NN_list_Unique, TurnNondistinguishedUsersOff = False,
+                 ImageFName= 'PostImage_NN_list.jpg', Connections= NN_list_Pairs
+                 )
+        pca_plot(getMtxFromUserNames(M.Umtx, M.Vmtx, M.Users_dict, ListOfUserNames),
+                 ListOfUserNames = new_list_Unique,
+                 SublistOfUserNames = [], TurnNondistinguishedUsersOff = False,
+                 ImageFName='PostImage_new_list.jpg', Connections= new_list_Pairs
+                 )
+
+
         print 'Scores of posts: ', M.Post2PostSimilarities(Model_Init_List, new_list)
         Model_Init_List.extend([new_list])
     # saving new_list to a file

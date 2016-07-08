@@ -60,7 +60,46 @@
         <img src= {{ img_ref }} alt="Wait a sec... There is a bug here!" width="1624" height="612">
 	
 	</div>
-    
-    <h2> {{ txt_data }}  </h2>
+
+
+
+
+    <h2>
+		<p>
+			The pictures above result from the forum of the Department for Radiotechnics and Cybernetics, MIPT
+			(zlo.rt.mipt.ru, referred to as 'the board' in what follows).
+		</p>
+
+
+		<p>
+			Short-term history of the board (a month approximately) was taken to construct a vector model for
+			its users, the so called boardtubbies. This model is essentially reproduction of the well-known
+			word2vec model from natural language processing, thus we call it here peop2vec (people to vector).
+			The shortest way to clarify the relation between word2vec and peop2vec is to  point out the relation
+			between constituents of the models: word <--> board user, sentence <--> post (a topic starter with comments),
+			text <--> board history.
+		</p>
+
+		<p>
+			Practical outcome of the model you see in the pictures above. Both pictures represent 2 posts from short
+			term board history. The post in red is currently 2 days old (now we are sure that it has collected almost all
+			its comments). The post in green is red's closest neighbour in the sense that green and red posts have largest
+			number of close inter-user vectors. Thus we think users in the 2 posts possess similar social relationship
+			inside each post respectively, and the posts should be similar in a way.
+		</p>
+
+		<p>
+			The picture is dynamical: when a new 2 days old post arrives, the vector model is rebuilt basing on the new post
+			and 2 new  pictures arise. Currently you have to reload the page manually to see fresh picture.
+		</p>
+
+		<p>
+			Peop2vec was conceived and implemented by Rashid Fakhrtdinov and Vasiliy Pavlov. We're glad
+			to receive your comments at mozhno.v.post@gmail.com .
+		</p>
+
+		<!-- {{ txt_data }}  -->
+
+	</h2>
 </body>
 </html>

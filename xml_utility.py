@@ -8,9 +8,9 @@ import urllib
 import datetime
 from time import sleep
 from lxml import etree
+from init_vars import * # import global data structures
 
-# import global data structures
-from init_vars import *
+W_TIME = 20
 
 # for our offline xml-database
 #import glob
@@ -28,6 +28,9 @@ url_search_pref = 'http://search.mipt.me/'
 
 # global path to our offline xml-database
 xml_DataBase_path = 'D:/program_backup/python-sources/data/board_pages/xmls/'
+
+# global path to log file
+log_path = 'C:/Users/User/Documents/BOARD/logs/'
 
 # get the maximum index of XML files in our offline xml-database
 def GetMaxIndexOfDownloadedXML(xml_DataBase_path):    
@@ -66,16 +69,17 @@ def xmlDatabaseUpdate(xmlDBpath = xml_DataBase_path):
 
 # make url-request to xmlfp board service and get MessageId of the last available message in xml-database
 # Attention! The last message on the forum is NOT always the last message available in xml-database. Especially on night..
-def GetLastMessageId():
+def GetLastMessageId(DebugMode = False):
     url_request = url_search_pref + 'xmlfp/xmlfp.jsp?xmlfp=lastMessageNumber&site=0'
     
     while True:
         try:
             lastnum_xmlstr = urllib.urlopen(url_request).read()
+            if DebugMode : DebugSaveToFile(lastnum_xmlstr)
             break
         except:
             pass
-        sleep(100)
+        sleep(W_TIME)
     
     xmltree = etree.fromstring(lastnum_xmlstr, parser=used_parser)
 
@@ -83,8 +87,8 @@ def GetLastMessageId():
     return lastId
 
 # check if new message in xml-database is available
-def CheckForNewMessage(old_Id):
-    new_Id = GetLastMessageId()
+def CheckForNewMessage(old_Id, DebugMode = False):
+    new_Id = GetLastMessageId(DebugMode)
     if new_Id == old_Id:
         return False
     elif new_Id > old_Id:
@@ -103,7 +107,7 @@ def DownloadNewXMLs(firstId,lastId):
             break
         except:
             pass
-        sleep(100)        
+        sleep(W_TIME)        
     
     return(xmlstr)
 
@@ -215,13 +219,14 @@ def UpdateListOfUserNames(DaysAgo = 1):
         
 # saving to file the values that updates the model
 # just for gebbuging
-def DebugSaveToFile(inp):
-    fout_path = 'D:/program_backup/python-sources/data/output/'
+def DebugSaveToFile(inp, fout_path = log_path):
+    
     if inp is not None :
-        fout = open(fout_path+'model_data'+'.txt','a')
+        fout = open(fout_path+'log'+'.txt','a')
         for usr in inp :
-            print usr
-            fout.write('[' + usr.encode('utf-8') + ']')
+            #print usr
+            #fout.write('[' + usr.encode('utf-8') + ']')
+            fout.write(usr.encode('utf-8'))
         fout.write('\n')
         fout.close()
 

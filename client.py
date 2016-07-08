@@ -4,7 +4,7 @@ import requests
 from time import sleep
 
 ############### Params
-WAIT_TIME = 100
+WAIT_TIME = 10
 
 ##########################################################
 

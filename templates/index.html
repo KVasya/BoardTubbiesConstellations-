@@ -4,100 +4,83 @@
 	<meta charset="utf-8">
 	<title>Boardtubbies everywhere!</title>
 
-	<style type="text/css">    
-  body
-  {
-    background-color: rgba(255,255,255,0.6);
+	<style type="text/css">
+
+  body {
+    background-color: rgba(255, 255, 255, 0.6);
   }
 
-  h1
-  {
-    font-size:36px;
-    margin-top:0;
-    font-family:Arial, sans-serif;
-    letter-spacing:4px;
-    text-decoration:none;
-    color:#000;
-    text-align:center;
-  }
-  
-  h2
-  {
-    font-size:12px;
-    margin-top:0;
-    font-family:Arial, sans-serif;
-    letter-spacing:2px;
-    text-decoration:none;
-    color:#000;
-    text-align:left;
-  }
-  #picture
-  {
-    border-radius:5px;
-    padding:10px 0;
-    text-align:center;
+  h1 {
+    font-size: 36px;
+    margin-top: 0;
+    font-family: "Times New Roman";
+    letter-spacing: 1px;
+    color: #000;
+    text-align: center;
   }
 
-
-  .lead
-  {
-    background-color:rgba(255,255,255,0.6);
-    border-radius:3px;
-    box-shadow:rgba(0,0,0,0.2) 0 1px 3px;
-    font-family:Sintony, sans-serif;
+  #text {
+    font-size: 14px;
+    margin-top: 0;
+    font-family: Verdana;
+    color: #001;
+    text-align: left;
   }
-	</style>
 
-</head>  
-  
-<body>	
-	<h1>Hi there, Board User!</h1>
-    
-    <div id="picture">
-        
-        <img src= {{ img_ref }} alt="Wait a sec... There is a bug here!" width="1624" height="612">
-	
-	</div>
+  img {
+    max-width: 90%;
+  }
 
+  #picture {
+    color: #AAA;
+    border-radius: 40px;
+    padding: 10px 0;
+    text-align: center;
+  }
 
+  .authors {
+    font-family: 'Fira Sans';
+    font-style: normal;
+    font-weight: 100;
+    padding: 10px 0;
+    text-align: right;
+  }
 
+    </style>
 
-    <h2>
-		<p>
-			The pictures above result from the forum of the Department for Radiotechnics and Cybernetics, MIPT
-			(zlo.rt.mipt.ru, referred to as 'the board' in what follows).
-		</p>
+</head>
 
+<body>
+  <h1>Hi there, Board User!</h1>
 
-		<p>
-			Short-term history of the board (a month approximately) was taken to construct a vector model for
-			its users, the so called boardtubbies. This model is essentially reproduction of the well-known
-			word2vec model from natural language processing, thus we call it here peop2vec (people to vector).
-			The shortest way to clarify the relation between word2vec and peop2vec is to  point out the relation
-			between constituents of the models: word <--> board user, sentence <--> post (a topic starter with comments),
-			text <--> board history.
+  <div id="picture">
+
+    <img src=http://vasya.pythonanywhere.com/static/_images/map.jpg alt="Wait a sec... There is a bug here!" width="1624" height="612">
+
+  </div>
+
+  <div id="text">
+    <p style="text-align: center;">
+      The pictures above result from the <a href="http://zlo.rt.mipt.ru">forum</a> of the Department for Radiotechnics and Cybernetics, MIPT (referred to as 'the board' in what follows).
 		</p>
 
 		<p>
-			Practical outcome of the model you see in the pictures above. Both pictures represent 2 posts from short
-			term board history. The post in red is currently 2 days old (now we are sure that it has collected almost all
-			its comments). The post in green is red's closest neighbour in the sense that green and red posts have largest
-			number of close inter-user vectors. Thus we think users in the 2 posts possess similar social relationship
-			inside each post respectively, and the posts should be similar in a way.
+			Short-term history of the board (a month approximately) was taken to construct a vector model for	its users, the so called boardtubbies. This model is essentially reproduction of the well-known	word2vec model from natural language processing, thus we call it here peop2vec (people to vector). The shortest way to clarify the relation between word2vec and peop2vec is to  point out the relation	between constituents of the models: word &lt;--&gt; board user, sentence &lt;--&gt; post (a topic starter with comments), text &lt;--&gt; board history.
 		</p>
 
 		<p>
-			The picture is dynamical: when a new 2 days old post arrives, the vector model is rebuilt basing on the new post
-			and 2 new  pictures arise. Currently you have to reload the page manually to see fresh picture.
+			Practical outcome of the model you see in the pictures above. Both pictures represent 2 posts from short term board history. The post in red is currently 2 days old (now we are sure that it has collected almost all its comments). The post in green is red's closest neighbour in the sense that green and red posts have largest number of close inter-user vectors. Thus we think users in the 2 posts possess similar social relationship inside each post respectively, and the posts should be similar in a way.
 		</p>
 
 		<p>
-			Peop2vec was conceived and implemented by Rashid Fakhrtdinov and Vasiliy Pavlov. We're glad
-			to receive your comments at mozhno.v.post@gmail.com .
+			The picture is dynamical: when a new 2 days old post arrives, the vector model is rebuilt basing on the new post and 2 new  pictures arise. Currently you have to reload the page manually to see fresh picture.
 		</p>
 
-		<!-- {{ txt_data }}  -->
+		<p class = "authors">
+			Peop2vec was conceived and implemented by Rashid Fakhrtdinov and Vasiliy Pavlov.<br>We're glad to receive your comments at mozhno.v.post@gmail.com.
+		</p>
 
-	</h2>
+<!-- {{ txt_data }}  -->
+    </div>
 </body>
 </html>
